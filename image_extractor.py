@@ -4,7 +4,8 @@ import pafy
 
 # font settings
 FONT = cv2.FONT_HERSHEY_SIMPLEX
-FONT_COLOR = (255, 255, 255)
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
 FONT_SCALE = 1
 FONT_THICKNESS = 2
 POSITION = (100, 100)
@@ -31,7 +32,7 @@ def extract_image_from_range(video, start_time, end_time):
 def add_text(image, text):
     height, width, _ = image.shape
     pos = (20, height - 20,)
-    return cv2.putText(image, text, pos, FONT, FONT_SCALE, FONT_COLOR, FONT_THICKNESS, LINE_TYPE, False)
+    return cv2.putText(image, text, pos, FONT, FONT_SCALE, WHITE, FONT_THICKNESS, LINE_TYPE, False)
 
 
 if __name__ == "__main__":
@@ -65,11 +66,11 @@ if __name__ == "__main__":
 
     # write first sentence
     pos = position1 if sentences[0][0] == 1 else position2
-    captioned_image = cv2.putText(image, sentences[0][1], pos, FONT, FONT_SCALE, FONT_COLOR, FONT_THICKNESS, LINE_TYPE, False)
+    captioned_image = cv2.putText(image, sentences[0][1], pos, FONT, FONT_SCALE, WHITE, FONT_THICKNESS, LINE_TYPE, False)
 
     # write second sentence
     if len(sentences) > 1:
         pos = position1 if sentences[1][0] == 1 else position2
-        captioned_image = cv2.putText(image, sentences[1][1], pos, FONT, FONT_SCALE, FONT_COLOR, FONT_THICKNESS, LINE_TYPE, False)
+        captioned_image = cv2.putText(image, sentences[1][1], pos, FONT, FONT_SCALE, WHITE, FONT_THICKNESS, LINE_TYPE, False)
 
     cv2.imwrite('captured_image.jpg', image)
