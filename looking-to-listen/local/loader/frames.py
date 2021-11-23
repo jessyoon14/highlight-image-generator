@@ -42,8 +42,28 @@ def input_face_embeddings(
         device = torch.device("cuda:0")
     else:
         device = torch.device("cpu")
-    result_cropped_tensors = []
-    no_face_indices = []
+    result_cropped_tensors1 = []
+    result_cropped_tensors2 = []
+    no_face_indices1 = []
+    no_face_indices2 = []
+    
+    # detect initial face position in first frame
+    first_frame = frames[0]
+    bounding_box, prob = mtcnn.detect(first_frame)
+    
+    if len(prob) < 2:
+        print("ERR: Can't detect two face from first frame")
+        return None
+
+    # detect face 1
+    box1 = bounding_box[0, :]
+    face1_x, face1_y = ((box1[0] + box1[2])//2, (box1[1] + box1[3])//2)
+
+    # detect face 2
+    box2 = bounding_box[1, :]
+    face2_x, face2_y = ((box2[0] + box2[2])//2, (box2[1] + box2[3])//2)
+
+
     for i, f in enumerate(frames):
         if is_path:
             frame = Image.open(f)
@@ -55,7 +75,13 @@ def input_face_embeddings(
             height, width, c = f.shape
             bounding_box, prob = mtcnn.detect(frame)
 
+            if len(prob) < 2:
+                print("ERR: Can't detect two face")
+                return None
+            
             if bounding_box is not None:
+                face1_found = False
+                face2_found = False
                 for box in bounding_box:
                     x1, y1, x2, y2 = box
                     if x1 > x2:
@@ -63,45 +89,73 @@ def input_face_embeddings(
                     if y1 > y2:
                         y1, y2 = y2, y1
 
-                    # for point in coord:
-                    x, y = coord[0], coord[1]
-                    x *= width
-                    y *= height
-                    if x >= x1 and y >= y1 and x <= x2 and y <= y2:
-                        cropped_tensors = extract_face(frame, box)
+                    if face1_x >= x1 and face1_y >= y1 and face1_x <= x2 and face1_y <= y2:
+                        cropped_tensors1 = extract_face(frame, box)
+                        face1_found = True
                         # print("found", box, x, y, end='\r')
+
+                    if face2_x >= x1 and face2_y >= y1 and face2_x <= x2 and face2_y <= y2:
+                        cropped_tensors2 = extract_face(frame, box)
+                        face2_found = True
+                        # print("found", box, x, y, end='\r')
+                    
+                    if face1_found and face2_found:
                         break
+        
+        # if face1 not found
+        if cropped_tensors1 is None:
+            cropped_tensors1 = torch.zeros((3, 160, 160))
+            no_face_indices1.append(i)
 
-        if cropped_tensors is None:
-            # Face not detected, for some reason
-            cropped_tensors = torch.zeros((3, 160, 160))
-            no_face_indices.append(i)
+        # if face2 not found
+        if cropped_tensors2 is None:
+            cropped_tensors2 = torch.zeros((3, 160, 160))
+            no_face_indices2.append(i)
 
+        
         if save_frames:
             name = name.replace(".mp4", "")
             saveimg = cropped_tensors.detach().cpu().numpy().astype("uint8")
             saveimg = np.squeeze(saveimg.transpose(1, 2, 0))
-            Image.fromarray(saveimg).save(f"{name}_{i}.png")
+            Image.fromarray(saveimg).save(f"{name}_{i}_face1.png")
 
-        result_cropped_tensors.append(cropped_tensors.to(device))
+            name = name.replace(".mp4", "")
+            saveimg = cropped_tensors.detach().cpu().numpy().astype("uint8")
+            saveimg = np.squeeze(saveimg.transpose(1, 2, 0))
+            Image.fromarray(saveimg).save(f"{name}_{i}_face2.png")
 
-    if len(no_face_indices) > 20:
+        result_cropped_tensors1.append(cropped_tensors1.to(device))
+        result_cropped_tensors2.append(cropped_tensors2.to(device))
+
+    if len(no_face_indices1) > 20 or len(no_face_indices2) > 20:
         # few videos start with silence, allow 0.5 seconds of silence else remove
         return None
     del frames
+
     # Stack all frames
-    result_cropped_tensors = torch.stack(result_cropped_tensors)
+    result_cropped_tensors1 = torch.stack(result_cropped_tensors1)
+    result_cropped_tensors2 = torch.stack(result_cropped_tensors2)
+
     # Embed all frames
-    result_cropped_tensors = result_cropped_tensors.to(device)
+    result_cropped_tensors1 = result_cropped_tensors1.to(device)
+    result_cropped_tensors2 = result_cropped_tensors2.to(device)
+    
     if use_half:
-        result_cropped_tensors = result_cropped_tensors.half()
+        result_cropped_tensors1 = result_cropped_tensors1.half()
+        result_cropped_tensors2 = result_cropped_tensors2.half()
 
     with torch.no_grad():
-        emb = resnet(result_cropped_tensors)
+        emb1 = resnet(result_cropped_tensors1)
+        emb2 = resnet(result_cropped_tensors2)
     if use_half:
-        emb = emb.float()
-    return emb.to(cpu_device)
-
+        emb1 = emb1.float()
+        emb2 = emb2.float()
+    
+    result1 = emb1.to(cpu_device)
+    result2 = emb2.to(cpu_device)
+    
+    
+    return result1, result2
 
 if __name__ == "__main__":
     mtcnn = MTCNN(keep_all=True).eval()

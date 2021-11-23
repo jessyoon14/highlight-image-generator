@@ -1,4 +1,5 @@
 import sys
+sys.path.append('/home/irslab/ws/highlight-image-generator/looking-to-listen')
 import yaml
 import collections
 from pathlib import Path
@@ -12,7 +13,7 @@ from asteroid.data.avspeech_dataset import AVSpeechDataset
 from local.loader.constants import EMBED_DIR
 from model import make_model_and_optimizer, load_best_model
 from train import SNRCallback, SDRCallback, ParamConfig
-
+from save_callbacks import SaveWavCallback
 
 def validate(model, val_dataset, config):
     loaders = collections.OrderedDict()
@@ -28,15 +29,21 @@ def validate(model, val_dataset, config):
 
     runner = SupervisedRunner(
         input_key=["input_audio", "input_video"]
-    )  # parameters of the model in forward(...)
+        )  # parameters of the model in forward(...)
+
     runner.infer(
         model,
         loaders,
         callbacks=collections.OrderedDict(
-            {"snr_callback": SNRCallback(), "sdr_callback": SDRCallback()}
+            {"snr_callback": SNRCallback(), 
+            "sdr_callback": SDRCallback(),
+            "save_wav_callback": SaveWavCallback()
+            }
         ),
         verbose=True,
     )
+
+    batch_prediction = runner.predict_batch(next(iter(loaders["valid"])))
 
 
 def main(conf):
@@ -49,7 +56,7 @@ def main(conf):
         learning_rate=conf["optim"]["lr"],
     )
 
-    val_dataset = AVSpeechDataset(Path("data/val.csv"), Path(EMBED_DIR), conf["main_args"]["n_src"])
+    val_dataset = AVSpeechDataset(Path("val.csv"), Path(EMBED_DIR), conf["main_args"]["n_src"])
 
     model = load_best_model(conf, conf["main_args"]["exp_dir"])
 

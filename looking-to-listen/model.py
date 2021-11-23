@@ -543,7 +543,7 @@ def load_best_model(train_conf, exp_dir):
 
     # Catalyst stores the best model as: logdir/checkpoints/best_full.pth
     exp_dir = Path(exp_dir) if isinstance(exp_dir, str) else exp_dir
-    best_model_path = exp_dir / "checkpoints" / "best_full.pth"
+    best_model_path = exp_dir / "best_full.pth"
     if not best_model_path.is_file():
         print(f"No best path in logdir: {exp_dir}. Initializing model...")
         return model
