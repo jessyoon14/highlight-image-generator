@@ -13,15 +13,6 @@ from constants import VIDEO_DIR, EMBED_DIR
 FRAMES = 75
 
 
-def _get_video(df):
-    video_columns = [i for i in list(df) if "video" in i]
-
-    video_paths = df[video_columns].values.reshape(-1).tolist()
-    video_paths = sorted(set(video_paths), key=video_paths.index)
-
-    return video_paths
-
-
 def store_corrupt(path):
     with open(args.corrupt_file, "a") as f:
         f.write(path.as_posix() + "\n")
@@ -53,14 +44,16 @@ def cache_embed(path, mtcnn, resnet, args):
     video_parts = total_frames // FRAMES  # (25fps * 3)
 
     embeddings = []
-    for part in range(video_parts):
+    for part in tqdm(range(video_parts)):
         frame_name = path.stem + f"_part{part}"
-        embed_path = Path(args.embed_dir, frame_name + ".npy")
-        if embed_path.is_file():
+        embed_path1 = Path(args.embed_dir, frame_name + "_face1" + ".npy")
+        embed_path2 = Path(args.embed_dir, frame_name + "_face2" + ".npy")
+        
+        if embed_path1.is_file() and embed_path2.is_file():
             continue
         raw_frames = video_buffer[part * FRAMES : (part + 1) * FRAMES]
 
-        embed = input_face_embeddings(
+        (embed1, embed2) = input_face_embeddings(
             raw_frames,
             is_path=False,
             mtcnn=mtcnn,
@@ -70,12 +63,13 @@ def cache_embed(path, mtcnn, resnet, args):
             coord=[pos_x, pos_y],
         )
 
-        if embed is None:
+        if (embed1 is None) or (embed2 is None):
             store_corrupt(orig_path)
             print("Corrupt", path)
             return
 
-        embeddings.append((embed, embed_path))
+        embeddings.append((embed1, embed_path1))
+        embeddings.append((embed2, embed_path2))
 
     # save if all parts are not corrupted
     for embed, embed_path in embeddings:
@@ -83,8 +77,6 @@ def cache_embed(path, mtcnn, resnet, args):
 
 
 def main(args):
-    train_df = pd.read_csv(args.train_path)
-    val_df = pd.read_csv(args.val_path)
 
     if args.cuda and torch.cuda.is_available():
         device = torch.device("cuda:0")
@@ -96,11 +88,11 @@ def main(args):
 
     resnet = InceptionResnetV1(pretrained="vggface2").eval().to(device)
 
-    video_paths = _get_video(train_df)
-    video_paths += _get_video(val_df)
+    # get_video takes 1 arg: video path
+    video_path = [args.video_path]
 
-    print(f"Total embeddings: {len(video_paths)}")
-    for path in tqdm(video_paths, total=len(video_paths)):
+    print(f"Total embeddings: {len(video_path)}")
+    for path in tqdm(video_path, total=len(video_path)):
         cache_embed(Path(path), mtcnn, resnet, args)
 
 
@@ -108,15 +100,11 @@ if __name__ == "__main__":
     from argparse import ArgumentParser
 
     parser = ArgumentParser()
-    parser.add_argument("--video-dir", default=Path(VIDEO_DIR), type=Path)
     parser.add_argument("--embed-dir", default=Path(EMBED_DIR), type=Path)
-    parser.add_argument("--train-path", default=Path("../../data/train.csv"), type=Path)
-    parser.add_argument("--val-path", default=Path("../../data/val.csv"), type=Path)
-    parser.add_argument("--cuda", dest="cuda", action="store_true")
-    parser.add_argument("--use-half", dest="use_half", action="store_true")
-    parser.add_argument(
-        "--corrupt-file", default=Path("../../data/corrupt_frames_list.txt"), type=Path
-    )
+    parser.add_argument("--cuda", dest="cuda", action="store_true", default=False)
+    parser.add_argument("--video-path", default=Path("../../storage_dir/storage/video/6f4FI_0_0_final.mp4"), type=Path)
+    # parser.add_argument("--audio-path", default=Path("../../storage_dir/storage/audio/6f4FI_0_0_final_part0.wav"), type=Path)
+    parser.add_argument("--use-half", dest="use_half", action="store_true", default=False)
 
     args = parser.parse_args()
 
