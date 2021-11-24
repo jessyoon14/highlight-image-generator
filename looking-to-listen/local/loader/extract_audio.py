@@ -8,7 +8,7 @@ from pathlib import Path
 import concurrent.futures
 from tqdm import tqdm
 
-from constants import AUDIO_DIR, VIDEO_DIR
+from .constants import AUDIO_DIR, VIDEO_DIR
 
 
 def extract(path):
@@ -44,7 +44,6 @@ def main(args):
 
     with concurrent.futures.ThreadPoolExecutor(args.jobs) as executor:
         results = list(tqdm(executor.map(extract, file_names), total=len(file_names)))
-
 
 if __name__ == "__main__":
     parse = argparse.ArgumentParser(description="Extract parameters")

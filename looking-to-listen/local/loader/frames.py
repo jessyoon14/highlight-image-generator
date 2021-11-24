@@ -53,7 +53,7 @@ def input_face_embeddings(
     
     if len(prob) < 2:
         print("ERR: Can't detect two face from first frame")
-        return None
+        return (None, None)
 
     # detect face 1
     box1 = bounding_box[0, :]
@@ -77,7 +77,7 @@ def input_face_embeddings(
 
             if len(prob) < 2:
                 print("ERR: Can't detect two face")
-                return None
+                return (None, None)
             
             if bounding_box is not None:
                 face1_found = False
@@ -129,7 +129,7 @@ def input_face_embeddings(
 
     if len(no_face_indices1) > 20 or len(no_face_indices2) > 20:
         # few videos start with silence, allow 0.5 seconds of silence else remove
-        return None
+        return (None, None)
     del frames
 
     # Stack all frames

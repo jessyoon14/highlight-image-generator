@@ -13,7 +13,7 @@ from asteroid.data.avspeech_dataset import AVSpeechDataset
 from local.loader.constants import EMBED_DIR
 from model import make_model_and_optimizer, load_best_model
 from train import SNRCallback, SDRCallback, ParamConfig
-from save_callbacks import SaveWavCallback
+from .save_callbacks import SaveWavCallback
 
 def validate(model, val_dataset, config):
     loaders = collections.OrderedDict()

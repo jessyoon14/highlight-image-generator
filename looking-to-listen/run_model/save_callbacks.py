@@ -5,6 +5,8 @@ from pathlib import Path
 import torchaudio
 from catalyst.dl.core import Callback, MetricCallback
 from train import snr, sdr
+from asteroid.data.avspeech_dataset import AVSpeechDataset
+import soundfile as sf
 
 
 class SaveWavCallback(MetricCallback):
@@ -37,12 +39,13 @@ class SaveWavCallback(MetricCallback):
             num_person = state.model.num_person
 
 
-
-        sample_rate = 16000
-
         for n in range(num_person):
             output_audio = output_audios[0, n, ...]
             # save audio
             filename =Path("/home/irslab/ws/highlight-image-generator/looking-to-listen/storage_dir/storage/result/person_{}.wav".format(n))
-            # print(output_audio.size())
-            torchaudio.save(filename, output_audio.cpu(), sample_rate, format="wav")
+            output_audio = output_audio.detach().cpu().numpy()
+            output_audio = AVSpeechDataset.decode(output_audio)
+            print(output_audio.size())
+            sf.write(filename, output_audio, 16000, 'PCM_24')
+
+

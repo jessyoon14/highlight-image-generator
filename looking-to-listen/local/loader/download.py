@@ -7,7 +7,7 @@ import pandas as pd
 from pathlib import Path
 import concurrent.futures
 
-from constants import VIDEO_DIR
+from .constants import VIDEO_DIR
 
 
 def download(link, path, final_name=None):
@@ -35,12 +35,11 @@ def crop(path, start, end, downloaded_name):
     #     "-c:a aac -b:a 128k -strict experimental -r 25 {}"
     # )
     command = (
-        "ffmpeg -y -i {}.mp4 -ss {} -t {} -c:v libx264 -crf 18 -preset veryfast -pix_fmt yuv420p "
+        "/home/irslab/bin/ffmpeg -y -i {}.mp4 -ss {} -t {} -c:v libx264 -crf 18 -preset veryfast -pix_fmt yuv420p "
         "-c:a aac -b:a 128k -strict experimental -r 25 {}"
     )
-
     start_minute, start_second = int(start // 60), int(start % 60)
-    end_minute, end_second = int(end // 60) - start_minute, int(end % 60) - start_second
+    end_minute, end_second =    int((end - start) // 60), int((end - start) % 60) # int(end // 60) - start_minute, int(end % 60) - start_second
 
     new_filepath = downloaded_name + "_final.mp4"
 
@@ -96,9 +95,12 @@ if __name__ == "__main__":
     parse = argparse.ArgumentParser(description="Download parameters")
     parse.add_argument("--jobs", type=int, default=1)
     # parse.add_argument("--path", type=str, default="../../data/audio_visual/avspeech_train.csv")
-    parse.add_argument("--video_link", type=str, default="https://www.youtube.com/watch?v=5clkKQ6f4FI")
-    parse.add_argument("--start_time", type=int, default=7)
-    parse.add_argument("--end_time", type=int, default=11)
+    
+    parse.add_argument("--video_link", type=str, default="https://www.youtube.com/watch?v=TPLKtBv5qLA")
+    # parse.add_argument("--video_link", type=str, default="https://www.youtube.com/watch?v=5clkKQ6f4FI")
+
+    parse.add_argument("--start_time", type=int, default=293)
+    parse.add_argument("--end_time", type=int, default=299)
     parse.add_argument("--vid-dir", type=str, default=VIDEO_DIR)
     # parse.add_argument("--start", type=int, default=0)
     # parse.add_argument("--end", type=int, default=10_000)

@@ -1,1 +1,1 @@
-from .frames import input_face_embeddings
+from .constants import VIDEO_DIR, AUDIO_DIR

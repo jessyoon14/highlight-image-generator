@@ -7,8 +7,8 @@ from pathlib import Path
 from asteroid.data.avspeech_dataset import get_frames
 from facenet_pytorch import MTCNN, InceptionResnetV1, extract_face
 
-from frames import input_face_embeddings
-from constants import VIDEO_DIR, EMBED_DIR
+from .frames import input_face_embeddings
+from .constants import VIDEO_DIR, EMBED_DIR
 
 FRAMES = 75
 
@@ -45,9 +45,9 @@ def cache_embed(path, mtcnn, resnet, args):
 
     embeddings = []
     for part in tqdm(range(video_parts)):
-        frame_name = path.stem + f"_part{part}"
-        embed_path1 = Path(args.embed_dir, frame_name + "_face1" + ".npy")
-        embed_path2 = Path(args.embed_dir, frame_name + "_face2" + ".npy")
+        # frame_name = path.stem + f"1_part{part}"
+        embed_path1 = Path(args.embed_dir, path.stem + f"_face1_part{part}" + ".npy")
+        embed_path2 = Path(args.embed_dir, path.stem + f"_face2_part{part}" + ".npy")
         
         if embed_path1.is_file() and embed_path2.is_file():
             continue
@@ -64,7 +64,7 @@ def cache_embed(path, mtcnn, resnet, args):
         )
 
         if (embed1 is None) or (embed2 is None):
-            store_corrupt(orig_path)
+            # store_corrupt(orig_path)
             print("Corrupt", path)
             return
 
@@ -102,7 +102,8 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("--embed-dir", default=Path(EMBED_DIR), type=Path)
     parser.add_argument("--cuda", dest="cuda", action="store_true", default=False)
-    parser.add_argument("--video-path", default=Path("../../storage_dir/storage/video/6f4FI_0_0_final.mp4"), type=Path)
+    parser.add_argument("--video-path", default=Path("../../storage_dir/storage/video/v5qLA_0_0_final.mp4"), type=Path)
+    # parser.add_argument("--video-path", default=Path("../../storage_dir/storage/video/6f4FI_0_0_final.mp4"), type=Path)
     # parser.add_argument("--audio-path", default=Path("../../storage_dir/storage/audio/6f4FI_0_0_final_part0.wav"), type=Path)
     parser.add_argument("--use-half", dest="use_half", action="store_true", default=False)
 
