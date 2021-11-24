@@ -11,7 +11,8 @@ from tqdm import tqdm
 from .constants import AUDIO_DIR, VIDEO_DIR
 
 
-def extract(path):
+def extract(arg_path):
+    args, path = arg_path
     name = path.stem
     dir_name = path.parents[0]
     audio_dir = args.aud_dir
@@ -43,7 +44,9 @@ def main(args):
     ]
 
     with concurrent.futures.ThreadPoolExecutor(args.jobs) as executor:
-        results = list(tqdm(executor.map(extract, file_names), total=len(file_names)))
+        arg_paths = map(lambda x: (args, x), file_names)
+        arg_paths = list(arg_paths)
+        results = list(tqdm(executor.map(extract, arg_paths), total=len(file_names)))
 
 if __name__ == "__main__":
     parse = argparse.ArgumentParser(description="Extract parameters")

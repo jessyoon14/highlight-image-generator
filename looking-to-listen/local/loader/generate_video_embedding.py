@@ -21,6 +21,7 @@ def store_corrupt(path):
 def cache_embed(path, mtcnn, resnet, args):
     orig_path = path
     if not path.is_file():
+        print('enter not file')
         path = "../.." / path
     video_file_name = path.stem.split("_")
 

@@ -547,7 +547,7 @@ def load_best_model(train_conf, exp_dir):
     if not best_model_path.is_file():
         print(f"No best path in logdir: {exp_dir}. Initializing model...")
         return model
-
+    print("Loaded model!")
     checkpoint = torch.load(best_model_path)
     model = torch_utils.load_state_dict_in(checkpoint["model_state_dict"], model)
     return model
