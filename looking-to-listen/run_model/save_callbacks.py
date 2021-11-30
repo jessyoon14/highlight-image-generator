@@ -42,7 +42,7 @@ class SaveWavCallback(MetricCallback):
         for n in range(num_person):
             output_audio = output_audios[0, n, ...]
             # save audio
-            filename =Path("/home/irslab/ws/highlight-image-generator/looking-to-listen/storage_dir/storage/result/person_{}.wav".format(n))
+            filename =Path("/home/yominx/ws/highlight-image-generator/looking-to-listen/storage_dir/storage/result/person_{}.wav".format(n))
             output_audio = output_audio.detach().cpu().numpy()
             output_audio = AVSpeechDataset.decode(output_audio)
             print(output_audio.size())

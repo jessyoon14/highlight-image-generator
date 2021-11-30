@@ -11,7 +11,7 @@ from .constants import VIDEO_DIR
 
 
 def download(link, path, final_name=None):
-    command = "python3.7 -m yt_dlp {} --no-check-certificate --output {}.mp4 -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4'"
+    command = "python -m yt_dlp {} --no-check-certificate --output {}.mp4 -f 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/mp4'"
     if os.path.exists(path) and os.path.isfile(path):
         print("File already downloaded")
         return False
@@ -35,7 +35,7 @@ def crop(path, start, end, downloaded_name):
     #     "-c:a aac -b:a 128k -strict experimental -r 25 {}"
     # )
     command = (
-        "/home/irslab/bin/ffmpeg -y -i {}.mp4 -ss {} -t {} -c:v libx264 -crf 18 -preset veryfast -pix_fmt yuv420p "
+        "ffmpeg -y -i {}.mp4 -ss {} -t {} -c:v libx264 -crf 18 -preset veryfast -pix_fmt yuv420p "
         "-c:a aac -b:a 128k -strict experimental -r 25 {}"
     )
     start_minute, start_second = int(start // 60), int(start % 60)

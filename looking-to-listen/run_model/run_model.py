@@ -1,5 +1,5 @@
 import sys
-sys.path.append('/home/irslab/ws/highlight-image-generator/looking-to-listen')
+sys.path.append('/home/yominx/ws/highlight-image-generator/looking-to-listen')
 import yaml
 import collections
 from pathlib import Path

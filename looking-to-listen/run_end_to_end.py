@@ -11,9 +11,15 @@ import yaml
 if __name__=="__main__":
 
     # download video
-    video_link = "https://www.youtube.com/watch?v=5clkKQ6f4FI"
-    start_time = 7
-    end_time = 11
+
+    # video_link = "https://www.youtube.com/watch?v=5clkKQ6f4FI"
+    # video_link = "https://www.youtube.com/watch?v=TPLKtBv5qLA"
+    # video_link = "https://www.youtube.com/watch?v=tsTZ2iFRSmw"
+    video_link = "https://www.youtube.com/watch?v=NCzS2umBKI8"
+
+
+    start_time = 1
+    end_time = 5
 
     VIDEO_DIR = "./storage_dir/storage/video"
     AUDIO_DIR = "./storage_dir/storage/audio"
@@ -41,7 +47,7 @@ if __name__=="__main__":
     
     generate_video_embedding.main(args3)
 
-    f = open('/home/irslab/ws/highlight-image-generator/looking-to-listen/'+'val.csv', 'w', encoding='utf-8', newline='')
+    f = open('/home/yominx/ws/highlight-image-generator/looking-to-listen/'+'val.csv', 'w', encoding='utf-8', newline='')
     wr = csv.writer(f)
     wr.writerow(['video_1','video_2','audio_1','audio_2','mixed_audio'])
     wr.writerow([fake_video_path1, fake_video_path2, audio_path, audio_path, audio_path])
