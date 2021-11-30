@@ -32,7 +32,7 @@ def extract_audio(video_path, output_audio_path):
             f"ffmpeg -y -i {path.as_posix()} -f {AUDIO_EXTENTION} -ab 64000 "
             f"-vn -ar {SAMPLING_RATE} -ac {AUDIO_CHANNEL} - | sox -t "
             f"{AUDIO_EXTENTION} - -r 16000 -c 1 -b 8 "
-            f"{output_audio_path}_part{i}.{AUDIO_EXTENTION} trim {t} 00:{2}"
+            f"{output_audio_path}_part{i}.{AUDIO_EXTENTION} trim {t} 00:{audio_duratiion:02d}"
         )
 
     subprocess.Popen(
