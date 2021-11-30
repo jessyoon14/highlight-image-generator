@@ -60,38 +60,9 @@ def crop(path, start, end, downloaded_name):
     ).communicate()
 
 
-def save_video(zargs):
-    link, path, start, end, pos_x, pos_y = zargs
-    x = int(pos_x * 10000)
-    y = int(pos_y * 10000)
+def save_and_crop_youtube_video(youtube_link, start_time, end_time)
+    path = Path(os.path.join(VIDEO_DIR, link[-5:]))
     downloaded_name = path.as_posix()
     cropped = download(link, downloaded_name, final_name=downloaded_name + "_final.mp4")
     if not cropped:
         crop(path, start, end, downloaded_name)
-
-
-def save_and_crop_youtube_video(youtube_link, start_time, end_time)
-
-
-def main(args):
-    link        = args.video_link
-    start_time  = args.start_time
-    end_time    = args.end_time
-    path        = Path(os.path.join(args.vid_dir, link[-5:]))
-
-    link_path = [(link, path, start_time, end_time, pos_x, pos_y)]
-    # results = save_video(link_path)
-    print(link_path)
-    with concurrent.futures.ThreadPoolExecutor(args.jobs) as executor:
-        results = list(tqdm.tqdm(executor.map(save_video, link_path), total=1))
-
-
-if __name__ == "__main__":
-    parse = argparse.ArgumentParser(description="Download parameters")
-    parse.add_argument("--jobs", type=int, default=1)
-    parse.add_argument("--video_link", type=str, default="https://www.youtube.com/watch?v=TPLKtBv5qLA")
-    parse.add_argument("--start_time", type=int, default=293)
-    parse.add_argument("--end_time", type=int, default=299)
-    parse.add_argument("--vid-dir", type=str, default=VIDEO_DIR)
-    args = parse.parse_args()
-    main(args)
