@@ -1,5 +1,5 @@
-looking-to-listen/storage_dir/
-looking-to-listen/exp/
+looking_to_listen/storage_dir/
+looking_to_listen/exp/
 *.futures
 
 # Byte-compiled / optimized / DLL files
