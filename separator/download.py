@@ -6,7 +6,7 @@ import subprocess
 import pandas as pd
 from pathlib import Path
 import concurrent.futures
-from .constants import VIDEO_DIR
+from constants import VIDEO_DIR
 
 
 def download(link, path, final_name=None):
@@ -28,10 +28,6 @@ def download(link, path, final_name=None):
 
 
 def crop(path, start, end, downloaded_name):
-    # command = (
-    #     "ffmpeg -y -i {}.mp4 -ss {} -t {} -pix_fmt yuv420p "
-    #     "-c:a aac -b:a 128k -strict experimental -r 25 {}"
-    # )
     command = (
         "ffmpeg -y -i {}.mp4 -ss {} -t {} -c:v libx264 -crf 18 -preset veryfast -pix_fmt yuv420p "
         "-c:a aac -b:a 128k -strict experimental -r 25 {}"
@@ -60,9 +56,15 @@ def crop(path, start, end, downloaded_name):
     ).communicate()
 
 
-def save_and_crop_youtube_video(youtube_link, start_time, end_time)
+def save_and_crop_youtube_video(youtube_link, start_time, end_time):
     path = Path(os.path.join(VIDEO_DIR, link[-5:]))
     downloaded_name = path.as_posix()
-    cropped = download(link, downloaded_name, final_name=downloaded_name + "_final.mp4")
+    final_path = downloaded_name + "_final.mp4"
+    cropped = download(link, downloaded_name, final_name=final_path)
     if not cropped:
         crop(path, start, end, downloaded_name)
+    return final_path
+
+if __name__== "__main__":
+    link = "https://www.youtube.com/watch?v=tsTZ2iFRSmw"
+    save_and_crop_youtube_video(link, 85, 100)

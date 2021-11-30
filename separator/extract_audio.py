@@ -8,7 +8,7 @@ from pathlib import Path
 import concurrent.futures
 from tqdm import tqdm
 
-from .constants import AUDIO_DIR, VIDEO_DIR
+from constants import AUDIO_DIR, VIDEO_DIR
 
 SAMPLING_RATE = 16_000
 AUDIO_CHANNEL = 2
@@ -16,72 +16,19 @@ AUDIO_EXTENTION = "wav"
 DURATION = 3
 
 
-def extract_audio(video_path, output_audio_path):
-    audio_duration = ???
-
-    args, path = arg_path
-    name = path.stem
-    dir_name = path.parents[0]
-    audio_dir = args.aud_dir
-    audio_path = os.path.join(audio_dir, name)
-    print(audio_path)
-    video = cv2.VideoCapture(path.as_posix())
-    length_orig_video = video.get(cv2.CAP_PROP_FRAME_COUNT)
+def extract_audio(video_path):
+    video_file_name = video_path.split('/')[-1]
+    video_file_name = video_file_name.split('.')[-2]
+    output_audio_path = os.path.join(AUDIO_DIR, name)
+    video = cv2.VideoCapture(video_path.as_posix())
 
     command = (
             f"ffmpeg -y -i {path.as_posix()} -f {AUDIO_EXTENTION} -ab 64000 "
             f"-vn -ar {SAMPLING_RATE} -ac {AUDIO_CHANNEL} - | sox -t "
             f"{AUDIO_EXTENTION} - -r 16000 -c 1 -b 8 "
-            f"{output_audio_path}_part{i}.{AUDIO_EXTENTION} trim {t} 00:{audio_duratiion:02d}"
+            f"{output_audio_path}.{AUDIO_EXTENTION}"
         )
 
     subprocess.Popen(
         command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
     ).communicate()
-
-
-
-
-
-    # already pre-processed at 25 fps for 3 or more seconds
-    length = int(length_orig_video) // 25 // 3
-    for i in range(length):
-        t = i * 3
-        command = (
-            f"ffmpeg -y -i {path.as_posix()} -f {args.audio_extension} -ab 64000 "
-            f"-vn -ar {args.sampling_rate} -ac {args.audio_channel} - | sox -t "
-            f"{args.audio_extension} - -r 16000 -c 1 -b 8 "
-            f"{audio_path}_part{i}.{args.audio_extension} trim {t} 00:{args.duration:02d}"
-        )
-
-        subprocess.Popen(
-            command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
-        ).communicate()
-
-def extract_audio(video_path):
-
-
-
-def main(args):
-    file_names = [
-        Path(os.path.join(args.vid_dir, i))
-        for i in os.listdir(args.vid_dir)
-        if i.endswith("_final.mp4")
-    ]
-
-    with concurrent.futures.ThreadPoolExecutor(args.jobs) as executor:
-        arg_paths = map(lambda x: (args, x), file_names)
-        arg_paths = list(arg_paths)
-        results = list(tqdm(executor.map(extract, arg_paths), total=len(file_names)))
-
-if __name__ == "__main__":
-    parse = argparse.ArgumentParser(description="Extract parameters")
-    parse.add_argument("--jobs", type=int, default=2)
-    parse.add_argument("--aud-dir", type=str, default=AUDIO_DIR)
-    parse.add_argument("--vid-dir", type=str, default=VIDEO_DIR)
-    parse.add_argument("--sampling-rate", type=int, default=16_000)
-    parse.add_argument("--audio-channel", type=int, default=2)
-    parse.add_argument("--audio-extension", type=str, default="wav")
-    parse.add_argument("--duration", type=int, default=3)
-    args = parse.parse_args()
-    main(args)

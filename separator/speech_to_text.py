@@ -115,8 +115,8 @@ def speech_to_text_fun(audio1, audio2):
 
 if __name__ == "__main__":
     p1, p2 = 1, 2
-    s1 = from_file(p1, "./pause.wav")
-    s2 = from_file(p2, "./sample2.wav")
+    s1 = from_file(p1, "/home/yominx/ws/highlight-image-generator/female-female-mixture_est1.wav")
+    s2 = from_file(p2, "/home/yominx/ws/highlight-image-generator/female-female-mixture_est2.wav")
 
     sentences = s1 + s2
     sentences.sort(key=lambda x: (x[0][0]))  # sort by start time
