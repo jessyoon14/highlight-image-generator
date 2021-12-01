@@ -9,7 +9,7 @@ from image_extractor import capture_image
 def run_end_to_end(youtube_link, start_time, end_time):
 
     file_name = youtube_link[-5:] + "_final"
-    # download video    
+    # # download video    
     video_path = save_and_crop_youtube_video(youtube_link, start_time, end_time)
     
     # separate audio
@@ -17,22 +17,24 @@ def run_end_to_end(youtube_link, start_time, end_time):
     result_paths = use_model(file_name)
     print('finish use_model')
 
-    # # # run STT
-    # audio1 = result_paths[0]
-    # audio2 = result_paths[1]
-    # # audio1 = "/home/yominx/ws/highlight-image-generator/media/audio_result/speaker1.wav"
-    # # audio2 = "/home/yominx/ws/highlight-image-generator/media/audio_result/speaker2.wav"
-    # script = speech_to_text_fun(audio1, audio2)
+    # run STT
+    audio1 = result_paths[0]
+    audio2 = result_paths[1]
+    # audio1 = "/home/yominx/ws/highlight-image-generator/media/audio_result/P8yBk_final/speaker1.wav"
+    # audio2 = "/home/yominx/ws/highlight-image-generator/media/audio_result/P8yBk_final/speaker2.wav"
+    script = speech_to_text_fun(audio1, audio2)
 
     # # capture image
     # # video = "/home/yominx/ws/highlight-image-generator/media/video/video_tracked1.mp4"
-    # capture_image(video_path, script)
+    # print(video_path)
+    # video_path = "/home/yominx/ws/highlight-image-generator/media/video/P8yBk_final.mp4"
+    capture_image(video_path, script)
 
     # # # generate image zip file
 
 if __name__=="__main__":
     print('Start run_end_to_end')
     
-    run_end_to_end('https://www.youtube.com/watch?v=5rXha4P8yBk', 100, 120)
+    run_end_to_end('https://youtu.be/V7g2HSy3Pss', 275, 285)
     # run_end_to_end('https://www.youtube.com/watch?v=QuIQ_RhVuCs', 0, 10)
     print('finish run_end_to_end')
