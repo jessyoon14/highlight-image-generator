@@ -61,10 +61,10 @@ def from_file(p_num, file_path):
     while not done:
         time.sleep(.5)
 
-    print(transcript_display_list)
-    print(transcript_ITN_list)
-    print(confidence_list)
-    print(words)
+    # print(transcript_display_list)
+    # print(transcript_ITN_list)
+    # print(confidence_list)
+    # print(words)
 
     list_of_sentence = []
 
@@ -104,9 +104,12 @@ def speech_to_text_fun(audio1, audio2):
     sentences = s1 + s2
     sentences.sort(key=lambda x: (x[0][0]))  # sort by start time
     print(sentences)
+    if len(sentences)==0:
+        print("Failed to convert speech to text.")
+        exit(-1)
 
     empty_script = []
-
+    
     script = make_script(sentences, empty_script,
                          {'start_time': sentences[0][0][0], 'end_time': sentences[0][0][1], 'sentence': []})
 

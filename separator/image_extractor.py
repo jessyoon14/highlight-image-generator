@@ -77,7 +77,7 @@ def capture_image(video_path, script):
             pos = position1 if sentences[1][0] == 1 else position2
             captioned_image = cv2.putText(image, sentences[1][1], pos, FONT, FONT_SCALE, WHITE, FONT_THICKNESS, LINE_TYPE, False)
 
-        cv2.imwrite('captured_image'+i+'.jpg', image)
+        cv2.imwrite('./images/captured_image'+i+'.jpg', image)
 
 if __name__ == "__main__":
     video_path = 'samplevid.mp4'

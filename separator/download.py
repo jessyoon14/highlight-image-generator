@@ -57,14 +57,15 @@ def crop(path, start, end, downloaded_name):
 
 
 def save_and_crop_youtube_video(youtube_link, start_time, end_time):
-    path = Path(os.path.join(VIDEO_DIR, link[-5:]))
+    path = Path(os.path.join(VIDEO_DIR, youtube_link[-5:]))
     downloaded_name = path.as_posix()
     final_path = downloaded_name + "_final.mp4"
-    cropped = download(link, downloaded_name, final_name=final_path)
+    print(final_path)
+    cropped = download(youtube_link, downloaded_name, final_name=final_path)
     if not cropped:
-        crop(path, start, end, downloaded_name)
+        crop(path, start_time, end_time, downloaded_name)
     return final_path
 
 if __name__== "__main__":
     link = "https://www.youtube.com/watch?v=tsTZ2iFRSmw"
-    save_and_crop_youtube_video(link, 85, 100)
+    save_and_crop_youtube_video(link, 90, 100)

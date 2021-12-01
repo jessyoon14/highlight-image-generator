@@ -1,5 +1,7 @@
 looking-to-listen/storage_dir/
 looking-to-listen/exp/
+media/
+VisualVoice/pretrained_models/
 *.futures
 
 # Byte-compiled / optimized / DLL files
