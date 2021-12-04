@@ -1,5 +1,4 @@
-import soundfile as sf
-from constants import VIDEO_DIR, AUDIO_DIR, AUDIO_RES_DIR, VV_DIR
+from .constants import VIDEO_DIR, AUDIO_DIR, AUDIO_RES_DIR, VV_DIR
 import subprocess
 import os
 
@@ -13,15 +12,15 @@ def use_model(vid_name):
     vid_path = f'{VIDEO_DIR}/{vid_name}'
 
     command_convert = f'ffmpeg -i {vid_path}.mp4 -filter:v fps=fps=25 {vid_path}25fps.mp4'
-    print('finish converting video')
 
     subprocess.Popen(
-        command_convert, shell=True, stdout=subprocess.DEVNULL
+        command_convert, shell=True #, stdout=subprocess.DEVNULL
     ).communicate()
-    
+
+    print('finish converting video')
     command_move = f'mv {vid_path}25fps.mp4 {vid_path}.mp4'
     subprocess.Popen(
-        command_move, shell=True, stdout=subprocess.DEVNULL
+        command_move, shell=True #, stdout=subprocess.DEVNULL
     ).communicate()
 
     # face detection

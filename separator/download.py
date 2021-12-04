@@ -1,12 +1,7 @@
 import os
-import time
-import tqdm
-import argparse
 import subprocess
-import pandas as pd
 from pathlib import Path
-import concurrent.futures
-from constants import VIDEO_DIR
+from .constants import VIDEO_DIR
 
 
 def download(link, path, final_name=None):
@@ -24,6 +19,7 @@ def download(link, path, final_name=None):
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     ).communicate()
+    print('finish run process')
     return False
 
 
@@ -62,6 +58,7 @@ def save_and_crop_youtube_video(youtube_link, start_time, end_time):
     final_path = downloaded_name + "_final.mp4"
     print(final_path)
     cropped = download(youtube_link, downloaded_name, final_name=final_path)
+    print('finish download video')
     if not cropped:
         crop(path, start_time, end_time, downloaded_name)
     return final_path

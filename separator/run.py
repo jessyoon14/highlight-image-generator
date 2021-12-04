@@ -1,8 +1,7 @@
-from download import save_and_crop_youtube_video
-from extract_audio import extract_audio
-from speech_to_text import speech_to_text_fun
-from seperator import use_model
-from image_extractor import capture_image
+from .download import save_and_crop_youtube_video
+from .speech_to_text import speech_to_text_fun
+from .seperator import use_model
+from .image_extractor import capture_image
 
 # https://www.youtube.com/watch?v=mwOB_pVNI1c
 

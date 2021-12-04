@@ -1,8 +1,7 @@
 import cv2
 import random
-import pafy
 import os
-from constants import IMAGE_RES_DIR
+from .constants import IMAGE_RES_DIR
 
 # font settings
 FONT = cv2.FONT_HERSHEY_SIMPLEX
