@@ -76,9 +76,9 @@ def from_file(p_num, file_path):
     return list_of_sentence
 
 
-def make_script(sentences, transcript, d, min=3e+7, max=5e+7):
+def make_script(sentences, transcript, d, min_time=2e+7, max_time=4e+7):
     if len(sentences) > 1:
-        if sentences[0][0][1] < sentences[1][0][0]:
+        if (sentences[0][0][1] < sentences[1][0][0]) or (d['end_time'] - d['start_time'] >= max_time):
             # d['end_time'] = sentences[0][0][1] if d['end_time'] < sentences[0][0][1] else d['end_time']
             d['sentence'].append((sentences[0][1], sentences[0][2]))
             transcript.append(d)

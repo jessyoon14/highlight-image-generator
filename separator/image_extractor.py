@@ -1,6 +1,8 @@
 import cv2
 import random
 import os
+import numpy as np
+import shutil
 from .constants import IMAGE_RES_DIR
 
 # font settings
@@ -39,8 +41,9 @@ def add_text(image, text):
     return cv2.putText(image, text, pos, FONT, FONT_SCALE, WHITE, FONT_THICKNESS, LINE_TYPE, False)
 
 def capture_image(video_path, script):
+    print('script: ', script)
     # video_path = video_path
-    video_name = video_path.split('/')[-1].split('.')[-2]
+    video_name = video_path.split('/')[-1].split('.')[-2] 
         
     # read video from file
     if os.path.isfile(video_path):
@@ -54,22 +57,30 @@ def capture_image(video_path, script):
     # youtube_video = pafy.new(url)
     # best_resolution_video = youtube_video.getbest(preftype='mp4')
     # video = cv2.VideoCapture(best_resolution_video.url)
-    # input = {
+    # script = [{
     #     'start_time': 1000,
     #     'end_time': 2000,
     #     'sentence': [(1, "hello world"), (2, "hello human")]
-    # }
+    # }, {
+    #     'start_time': 4000,
+    #     'end_time': 6000,
+    #     'sentence': [(1, "hello world"), (2, "hello human")]
+    # },{
+    #     'start_time': 8000,
+    #     'end_time': 10000,
+    #     'sentence': [(1, "hello world"), (2, "hello human")]
+    # }]
 
     # sentences = input['sentence']
     # start_time = input['start_time']
     # end_time = input['end_time']
-
+    # IMAGE_RES_DIR = os.getcwd() + '/media/image_result'
     save_dir = f'{IMAGE_RES_DIR}/{video_name}'
     if os.path.isdir(save_dir):
-        if remove:
-            shutil.rmtree(save_dir)
-        else:
-            return
+        # if remove:
+        shutil.rmtree(save_dir)
+    # else:
+    #         # return
     os.makedirs(save_dir)
 
 
@@ -85,24 +96,60 @@ def capture_image(video_path, script):
         position1 = (20, height - 20)
         position2 = (20, 30)
 
+        # frame = cv2.resize(image, (height, width))
+        # bg_color = (0,0,0)
+        # bg = np.full((frame.shape), bg_color, dtype=np.uint8)
+
         # write first sentence
+        i = 0
+        script1 = sentences[i][1]
+        prev_talker = sentences[i][0]
+        curr_talker = None if len(sentences) == 1 else sentences[i+1][0]
+        
+        while prev_talker == curr_talker:
+            script1 = script1 + sentences[i+1][1]
+            
+            i+=1
+            prev_talker = sentences[i][0]
+            curr_talker = None if len(sentences) == 1 else sentences[i+1][0]
+        
         pos = position1 if sentences[0][0] == 1 else position2
-        captioned_image = cv2.putText(image, sentences[0][1], pos, FONT, FONT_SCALE, WHITE, FONT_THICKNESS, LINE_TYPE, False)
-
+        captioned_image = cv2.putText(image, script1, pos, FONT, FONT_SCALE, WHITE, FONT_THICKNESS, LINE_TYPE, False)
+        #captioned_image = cv2.putText(image, sentences[0][1], pos, FONT, FONT_SCALE, WHITE, FONT_THICKNESS, LINE_TYPE, False)
+        #captioned_image = cv2.putText(bg, sentences[0][1], pos, FONT, FONT_SCALE, WHITE, FONT_THICKNESS, LINE_TYPE, False)
         # write second sentence
-        if len(sentences) > 1:
-            pos = position1 if sentences[1][0] == 1 else position2
-            captioned_image = cv2.putText(image, sentences[1][1], pos, FONT, FONT_SCALE, WHITE, FONT_THICKNESS, LINE_TYPE, False)
+        if len(sentences) > i:
+            pos = position1 if sentences[i][0] == 1 else position2
+            
+            script2 = sentences[i][1]
+            prev_talker = sentences[i][0]
+            curr_talker = None if len(sentences) == 1 else sentences[i+1][0]
+            
+            while prev_talker == curr_talker:
+                script2 = script2 + sentences[i+1][1]
+            
+                i+=1
+                prev_talker = sentences[i][0]
+                curr_talker = None if len(sentences) == 1 else sentences[i+1][0]
+            
+            
+            captioned_image = cv2.putText(image, script2, pos, FONT, FONT_SCALE, WHITE, FONT_THICKNESS, LINE_TYPE, False)
+            #captioned_image = cv2.putText(bg, sentences[1][1], pos, FONT, FONT_SCALE, WHITE, FONT_THICKNESS, LINE_TYPE, False)
 
-    
+        # x, y, w, h = cv2.boundingRect(bg[:,:,2])
+        # w, h = w+10, h+10
+        # x, y = x-5, y-5
+        # result = frame.copy()
+        # result[y:y+h, x:x+w] = bg[y:y+h, x:x+w]
+
         cv2.imwrite(f'{save_dir}/captured_image{i}.jpg', image)
-
+        #cv2.imwrite(f'{save_dir}/captured_image{i}.jpg', frame)
 
 
     video.release()
 
 if __name__ == "__main__":
-    video_path = '../media/video/P8yBk_final.mp4'
+    video_path = './media/video/P8yBk_final.mp4'
 
     input = {
         'start_time': 1,
@@ -110,3 +157,4 @@ if __name__ == "__main__":
         'sentence': [(1, "hello world"), (2, "hello human")]
     }
 
+    capture_image(video_path,input)

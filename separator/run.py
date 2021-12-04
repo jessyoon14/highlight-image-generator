@@ -19,10 +19,19 @@ def run_end_to_end(youtube_link, start_time, end_time):
     # run STT
     audio1 = result_paths[0]
     audio2 = result_paths[1]
-    # audio1 = "/home/yominx/ws/highlight-image-generator/media/audio_result/P8yBk_final/speaker1.wav"
-    # audio2 = "/home/yominx/ws/highlight-image-generator/media/audio_result/P8yBk_final/speaker2.wav"
-    script = speech_to_text_fun(audio1, audio2)
+    
+    ### audio1 = "/home/yominx/ws/highlight-image-generator/media/audio_result/P8yBk_final/speaker1.wav"
+    ### audio2 = "/home/yominx/ws/highlight-image-generator/media/audio_result/P8yBk_final/speaker2.wav"
 
+    # temp
+    # video_path = "/home/yominx/ws/highlight-image-generator/media/video/y3Pss_final.mp4"
+    # result_paths = ["/home/yominx/ws/highlight-image-generator/media/audio_result/y3Pss_final/speaker1.wav", "/home/yominx/ws/highlight-image-generator/media/audio_result/y3Pss_final/speaker2.wav"]
+    # audio1 = result_paths[0]
+    # audio2 = result_paths[1]
+
+    print('start speech to text')
+    script = speech_to_text_fun(audio1, audio2)
+    print('finish speech to text')
     # # capture image
     # # video = "/home/yominx/ws/highlight-image-generator/media/video/video_tracked1.mp4"
     # print(video_path)

@@ -1,10 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework.decorators import api_view
+
 # Create your views here.
 import sys, os
+base_dir = os.getcwd()
+sys.path.append(os.path.dirname(f'{base_dir}/separator'))
 
-sys.path.append(os.path.dirname('/Users/jessyoon/KAIST/1-intro-to-deep-learning/final-proj/highlight-generator/separator'))
+# sys.path.append(os.path.dirname('/home/yominx/ws/highlight-image-generator/separator'))
 
 from separator.constants import IMAGE_RES_DIR
 from separator.run import run_end_to_end
@@ -25,8 +28,8 @@ def make_archive(source, destination):
 def index(request):
     print('enter index')
     youtube_link = request.data['youtube_link']
-    start_time = request.data['start_time']
-    end_time = request.data['end_time']
+    start_time = int(request.data['start_time'])
+    end_time = int(request.data['end_time'])
     print(f'youtube_link is {youtube_link}')
 
 
@@ -34,12 +37,14 @@ def index(request):
 
     # call
     try:
-        # run_end_to_end(youtube_link, start_time, end_time) # TODO: enable
-
+        run_end_to_end(youtube_link, start_time, end_time)
+        print('finish run_end_to_end')
         # create image zip file
-        image_dir = f'{IMAGE_RES_DIR}/{video_name}'
+        print('start zip')
+        image_dir = f'{IMAGE_RES_DIR}/{video_name}_final'
         zip_file_path = f'{image_dir}.zip'
         make_archive(image_dir, zip_file_path)
+        print('finish zip')
         return HttpResponse('Received link and finished processing')
     except Exception as e:
         print(e)
@@ -50,7 +55,7 @@ def index(request):
 def download(request):
     print('enter index')
 
-    video_name = request.GET.get('youtube_name', '')
+    video_name = request.GET.get('youtube_name', '')[:-1]
     if video_name == '':
         return HttpResponse(f'Bad file name (should be last 5 letters of youtube link)')
 
@@ -58,7 +63,7 @@ def download(request):
     try:
         # create image zip file
         image_dir = f'{IMAGE_RES_DIR}/{video_name}'
-        zip_file_path = f'{image_dir}.zip'
+        zip_file_path = f'{image_dir}_final.zip'
         response = HttpResponse(open(zip_file_path, 'rb').read())
         response['Content-Type'] = 'application/zip'
         response['Content-Disposition'] = f'attachment; filename=highlight_images.zip'
