@@ -90,6 +90,39 @@ def use_model(vid_name):
                                 f'--number_of_identity_frames 1 '\
                                 f'--output_dir_root {AUDIO_RES_DIR}/{vid_name}/'
 
+    # two-person model
+    # command_run_video_test = f'python ./testRealVideo.py '\
+    #                             f'--mouthroi_root {VIDEO_DIR}/{vid_name}/mouthroi/ '\
+    #                             f'--facetrack_root {VIDEO_DIR}/{vid_name}/faces/ '\
+    #                             f'--audio_path {AUDIO_DIR}/{vid_name}.wav '\
+    #                             f'--weights_lipreadingnet ./av-separation-with-context/lipreading_best.pth '\
+    #                             f'--weights_facial ./av-separation-with-context/facial_best.pth '\
+    #                             f'--weights_unet ./av-separation-with-context/unet_best.pth '\
+    #                             f'--weights_vocal ./av-separation-with-context/vocal_best.pth '\
+    #                             f'--lipreading_config_path ./configs/lrw_snv1x_tcn2x.json '\
+    #                             f'--num_frames 64 '\
+    #                             f'--audio_length 2.55 '\
+    #                             f'--hop_size 160 '\
+    #                             f'--window_size 400 '\
+    #                             f'--n_fft 512 '\
+    #                             f'--unet_output_nc 2 '\
+    #                             f'--normalization '\
+    #                             f'--visual_feature_type both '\
+    #                             f'--identity_feature_dim 128 '\
+    #                             f'--audioVisual_feature_dim 1152 '\
+    #                             f'--visual_pool maxpool '\
+    #                             f'--audio_pool maxpool '\
+    #                             f'--compression_type none '\
+    #                             f'--reliable_face '\
+    #                             f'--audio_normalization '\
+    #                             f'--desired_rms 0.7 '\
+    #                             f'--number_of_speakers 2 '\
+    #                             f'--mask_clip_threshold 5 '\
+    #                             f'--hop_length 2.55 '\
+    #                             f'--lipreading_extract_feature '\
+    #                             f'--number_of_identity_frames 1 '\
+    #                             f'--output_dir_root {AUDIO_RES_DIR}/{vid_name}/'
+
     subprocess.Popen(
         command_run_video_test, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
     ).communicate()

@@ -28,8 +28,11 @@ def make_archive(source, destination):
 def index(request):
     print('enter index')
     youtube_link = request.data['youtube_link']
-    start_time = int(request.data['start_time'])
-    end_time = int(request.data['end_time'])
+    start_time_str = request.data['start_time'].split(':')
+    end_time_str = request.data['end_time'].split(':')
+
+    start_time = int(start_time_str[0]) * 60 + int(start_time_str[1])
+    end_time   = int(end_time_str[0]) * 60 + int(end_time_str[1])
     print(f'youtube_link is {youtube_link}')
 
 

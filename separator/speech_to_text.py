@@ -71,14 +71,15 @@ def from_file(p_num, file_path):
     for i in range(len(transcript_display_list)):
         start_time = words[i][0]['Offset']
         end_time = words[i][-1]['Offset'] + words[i][-1]['Duration']
-        list_of_sentence.append(((start_time, end_time), p_num, transcript_display_list[i]))
+        if transcript_display_list[i]!='':
+            list_of_sentence.append(((start_time, end_time), p_num, transcript_display_list[i]))
 
     return list_of_sentence
 
 
 def make_script(sentences, transcript, d, min_time=2e+7, max_time=4e+7):
     if len(sentences) > 1:
-        if (sentences[0][0][1] < sentences[1][0][0]) or (d['end_time'] - d['start_time'] >= max_time):
+        if (sentences[0][0][1] < sentences[1][0][0]) or (d['end_time'] - d['start_time'] >= max_time) or len(d['sentence'])==1:
             # d['end_time'] = sentences[0][0][1] if d['end_time'] < sentences[0][0][1] else d['end_time']
             d['sentence'].append((sentences[0][1], sentences[0][2]))
             transcript.append(d)
@@ -112,14 +113,14 @@ def speech_to_text_fun(audio1, audio2):
     
     script = make_script(sentences, empty_script,
                          {'start_time': sentences[0][0][0], 'end_time': sentences[0][0][1], 'sentence': []})
-
+    print(script)
     return script
 
 
 if __name__ == "__main__":
     p1, p2 = 1, 2
-    s1 = from_file(p1, "/home/yominx/ws/highlight-image-generator/female-female-mixture_est1.wav")
-    s2 = from_file(p2, "/home/yominx/ws/highlight-image-generator/female-female-mixture_est2.wav")
+    s1 = from_file(p1, "/home/yominx/ws/highlight-image-generator/media/audio_result/y3Pss_final/speaker1.wav")
+    s2 = from_file(p2, "/home/yominx/ws/highlight-image-generator/media/audio_result/y3Pss_final/speaker2.wav")
 
     sentences = s1 + s2
     sentences.sort(key=lambda x: (x[0][0]))  # sort by start time
