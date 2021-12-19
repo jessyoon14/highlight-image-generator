@@ -25,7 +25,7 @@ git clone https://github.com/jessyoon14/highlight-image-generator
 git clone https://github.com/navy3690/highlight-image-generator-web
 cd highlight-image-generator
 git clone https://github.com/facebookresearch/VisualVoice
-mkdir -p media/audio && media/audio_result && media/image_result && media/video
+mkdir -p {media/audio, media/audio_result, media/image_result, media/video}
 
 # install requirements for model and back-end
 pip install -r requirements.txt
