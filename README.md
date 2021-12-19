@@ -93,14 +93,16 @@ Turn on the back-end.
 *Note: you must run **manage.py** in this directory. Our system uses relative path from the working directory, so please make certain that your current working directory is the ‘highlight’.*
 
 ```bash
-cd ~/highlight/highlight-image-generator/highlighter
-python manage.py runserver
+# cd into this repository's directory with the following command (please use an appropriate path for your computer)
+cd highlight-image-generator
+python highlighter/manage.py runserver
 ```
 
 Please turn on the front-end in another shell.
 
 ```bash
-cd ~/highlight/highlight-image-generator-web
+# cd into the frontend directory cloned above with the following command (please use an appropriate path for your computer)
+cd highlight-image-generator-web
 npm run serve
 ```
 
