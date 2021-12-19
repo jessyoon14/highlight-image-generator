@@ -96,7 +96,7 @@ Turn on the back-end.
 ```bash
 # cd into this repository's directory, using the appropriate path for your computer
 cd highlight-image-generator/highlighter
-python manage.py runserver
+python manage.py runserver 8000
 ```
 
 Please turn on the front-end in another shell.
