@@ -72,22 +72,17 @@ sudo apt-get install libx264-dev
 And, download pre-trained model.
 
 ```bash
-mkdir -p ~/highlight/VisualVoice/pretrained_models
-cd ~/highlight/VisualVoice/pretrained_models
+# from inside the highlight-image-generator directory
+mkdir -p VisualVoice/pretrained_models
+cd VisualVoice/pretrained_models
 wget http://dl.fbaipublicfiles.com/VisualVoice/av-speech-separation-model/facial_best.pth
 wget http://dl.fbaipublicfiles.com/VisualVoice/av-speech-separation-model/lipreading_best.pth
 wget http://dl.fbaipublicfiles.com/VisualVoice/av-speech-separation-model/unet_best.pth
 wget http://dl.fbaipublicfiles.com/VisualVoice/av-speech-separation-model/vocal_best.pth
 ```
 
-We use Microsoft Azure API. The API requires private key to access, so we didn't uploaded our private key for security. To activate Azure API, please register to Azure in the homepage, and write private key in *'.env'* file.
+We use Microsoft Azure API. The API requires private key to access, so we didn't uploaded our private key for security. To activate Azure API, please register to Azure in the homepage, and write private key in *'.env'* file. Create the .env file by copying .env.example, filling in the API private key, and changing the file name to .env.
 
- 
-
-```bash
-vim ~/highlight/highlight-image-generator/.env
-# Write your Azure private key here
-```
 
 Turn on the back-end.
 
