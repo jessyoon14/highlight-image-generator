@@ -104,7 +104,7 @@ Please turn on the front-end in another shell.
 
 ```bash
 # cd into the frontend directory cloned above, using the appropriate path for your computer
-cd ~/highlight-image-generator-web
+cd ~/highlight/highlight-image-generator-web
 npm run serve
 ```
 
