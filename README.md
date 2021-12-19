@@ -8,7 +8,7 @@ To use our application, you should clone 3 GitHub repositories.
 2. [VisualVoice](https://github.com/facebookresearch/VisualVoice) (Speech separation model - this directory should be cloned inside highlight-image-generator)
 3. [Highlight image generator web](https://github.com/navy3690/highlight-image-generator-web) (Front-end)
 
-To perform this, please type below command on the shell. In below example, we set root directory as '*~/highlight'* in this example command.
+To perform this, please type below command on the shell.
 
 We set our environment by using conda with python version 3.8.12. If you want make same virtual environment, type below:
 
@@ -20,13 +20,12 @@ conda activate test
  After, clone the repositories and install requirement with below command:
 
 ```bash
-mkdir -p ~/highlight && cd ~/highlight
+mkdir highlight && cd highlight
 git clone https://github.com/jessyoon14/highlight-image-generator
 git clone https://github.com/navy3690/highlight-image-generator-web
 cd highlight-image-generator
 git clone https://github.com/facebookresearch/VisualVoice
-mkdir media
-mkdir -p media/audio && audio_result && image_result && video
+mkdir -p media/audio && media/audio_result && media/image_result && media/video
 
 # install requirements for model and back-end
 pip install -r requirements.txt
@@ -92,11 +91,11 @@ vim ~/highlight/highlight-image-generator/.env
 
 Turn on the back-end.
 
-*Note: you must run **manage.py** in this directory. Our system uses relative path from the working directory, so please make certain that your current working directory is the ‘highlighter’.*
+*Note: you must run **manage.py** in this directory. Our system uses relative path from the working directory, so please make certain that your current working directory is the ‘highlight’.*
 
 ```bash
 # cd into this repository's directory, using the appropriate path for your computer
-cd ~/highlight-image-generator/highlighter
+cd highlight-image-generator/highlighter
 python manage.py runserver
 ```
 
@@ -104,7 +103,7 @@ Please turn on the front-end in another shell.
 
 ```bash
 # cd into the frontend directory cloned above, using the appropriate path for your computer
-cd ~/highlight/highlight-image-generator-web
+cd highlight-image-generator-web
 npm run serve
 ```
 
