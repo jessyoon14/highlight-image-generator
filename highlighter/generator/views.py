@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from rest_framework.decorators import api_view
+from rest_framework import status
 
 # Create your views here.
 import sys, os
@@ -26,38 +27,30 @@ def make_archive(source, destination):
 
 @api_view(['POST'])
 def index(request):
-    print('enter index')
     youtube_link = request.data['youtube_link']
     start_time_str = request.data['start_time'].split(':')
     end_time_str = request.data['end_time'].split(':')
 
     start_time = int(start_time_str[0]) * 60 + int(start_time_str[1])
     end_time   = int(end_time_str[0]) * 60 + int(end_time_str[1])
-    print(f'youtube_link is {youtube_link}')
-
 
     video_name = youtube_link[-5:]
 
     # call
     try:
         run_end_to_end(youtube_link, start_time, end_time)
-        print('finish run_end_to_end')
         # create image zip file
-        print('start zip')
         image_dir = f'{IMAGE_RES_DIR}/{video_name}_final'
         zip_file_path = f'{image_dir}.zip'
         make_archive(image_dir, zip_file_path)
-        print('finish zip')
         return HttpResponse('Received link and finished processing')
     except Exception as e:
         print(e)
-        return HttpResponse(f'Error while processing')
+        return HttpResponse(f'Video is not appropriate for processing', status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
 @api_view(['GET'])
 def download(request):
-    print('enter index')
-
     video_name = request.GET.get('youtube_name', '')[:-1]
     if video_name == '':
         return HttpResponse(f'Bad file name (should be last 5 letters of youtube link)')
@@ -73,4 +66,4 @@ def download(request):
         return response
     except Exception as e:
         print(e)
-        return HttpResponse(f'Error while processing')
+        return HttpResponse(f'Cannot find the corresponding video. Please try generating first.', status=status.HTTP_404_NOT_FOUND)
