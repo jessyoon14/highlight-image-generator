@@ -41,3 +41,4 @@ pandas
 python-dotenv
 pyshine
 sounddevice
+yt-dlp
