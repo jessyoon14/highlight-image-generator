@@ -2,10 +2,10 @@
 
 Note: our system is tested on the Ubuntu 18.04 LTS, and hardware spec: intel i5-10400F, GTX1650 
 
-To use our application, you should clone 3 GitHub repository in a same directory.
+To use our application, you should clone 3 GitHub repositories.
 
-1. [VisualVoice](https://github.com/facebookresearch/VisualVoice) (Speech separation model)
-2. [Highlight image generator](https://github.com/jessyoon14/highlight-image-generator) (Back-end)
+1. [Highlight image generator](https://github.com/jessyoon14/highlight-image-generator) (Back-end)
+2. [VisualVoice](https://github.com/facebookresearch/VisualVoice) (Speech separation model - this directory should be cloned inside highlight-image-generator)
 3. [Highlight image generator web](https://github.com/navy3690/highlight-image-generator-web) (Front-end)
 
 To perform this, please type below command on the shell. In below example, we set root directory as '*~/highlight'* in this example command.
@@ -21,10 +21,12 @@ conda activate test
 
 ```bash
 mkdir -p ~/highlight && cd ~/highlight
-git clone https://github.com/facebookresearch/VisualVoice
 git clone https://github.com/jessyoon14/highlight-image-generator
 git clone https://github.com/navy3690/highlight-image-generator-web
 cd highlight-image-generator
+git clone https://github.com/facebookresearch/VisualVoice
+mkdir media
+mkdir -p media/audio && audio_result && image_result && video
 
 # install requirements for model and back-end
 pip install -r requirements.txt
@@ -90,19 +92,19 @@ vim ~/highlight/highlight-image-generator/.env
 
 Turn on the back-end.
 
-*Note: you must run **manage.py** in this directory. Our system uses relative path from the working directory, so please make certain that your current working directory is the ‘highlight’.*
+*Note: you must run **manage.py** in this directory. Our system uses relative path from the working directory, so please make certain that your current working directory is the ‘highlighter’.*
 
 ```bash
-# cd into this repository's directory with the following command (please use an appropriate path for your computer)
-cd highlight-image-generator
-python highlighter/manage.py runserver
+# cd into this repository's directory, using the appropriate path for your computer
+cd ~/highlight-image-generator/highlighter
+python manage.py runserver
 ```
 
 Please turn on the front-end in another shell.
 
 ```bash
-# cd into the frontend directory cloned above with the following command (please use an appropriate path for your computer)
-cd highlight-image-generator-web
+# cd into the frontend directory cloned above, using the appropriate path for your computer
+cd ~/highlight-image-generator-web
 npm run serve
 ```
 
