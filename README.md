@@ -84,10 +84,10 @@ wget http://dl.fbaipublicfiles.com/VisualVoice/av-speech-separation-model/unet_b
 wget http://dl.fbaipublicfiles.com/VisualVoice/av-speech-separation-model/vocal_best.pth
 ```
 
-We use Microsoft Azure API. The API requires private key to access, so we didn't uploaded our private key for security. To activate Azure API, please register to Azure in the homepage, and write private key in *'.env'* file. Create the .env file by copying .env.example, filling in the API private key, and changing the file name to .env.
+We use Microsoft Azure Cognitige Services: Speech-toText API. This API requires private key to access, so we didn't uploaded our private key for security. To obtain a private key for the Microsoft Azure API, please register to use this API by following [the official guide](https://docs.microsoft.com/en-us/azure/cognitive-services/speech-service/overview#try-the-speech-service-for-free). After you initialize the Azure resource and obtain the private key, create the .env file by copying .env.example, filling in the API private key and region, and changing the file name to .env. Please note that Microsoft Azure offers a 30 day free trial period.
 
 
-Turn on the back-end.
+Serve the back-end server.
 
 *Note: you must run **manage.py** in this directory. Our system uses relative path from the working directory, so please make certain that your current working directory is the ‘highlight’.*
 
@@ -97,7 +97,7 @@ cd highlight-image-generator
 python highlighter/manage.py runserver 8000
 ```
 
-Please turn on the front-end in another shell.
+Please serve the front-end in another shell.
 
 ```bash
 # cd into the frontend directory cloned above, using the appropriate path for your computer
