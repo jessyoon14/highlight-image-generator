@@ -34,7 +34,10 @@ pip install -r requirements.txt
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash 
 source ~/.bashrc
 conda activate test
-nvm install v13.6.0
+nvm install v13.7.0
+# install front-end dependencies
+npm install --global yarn
+yarn install
 ```
 
 Below command are needed to resolve codec problem of the ffmpeg. If below command doesn’t work well, please refer [ffmpeg official installation guide](https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu).
