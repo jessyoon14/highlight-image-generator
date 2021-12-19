@@ -25,7 +25,7 @@ git clone https://github.com/jessyoon14/highlight-image-generator
 git clone https://github.com/navy3690/highlight-image-generator-web
 cd highlight-image-generator
 git clone https://github.com/facebookresearch/VisualVoice
-mkdir -p {media/audio, media/audio_result, media/image_result, media/video}
+mkdir -p media/audio media/audio_result media/image_result media/video
 
 # install requirements for model and back-end
 pip install -r requirements.txt
@@ -106,3 +106,23 @@ npm run serve
 ```
 
 Now you can access our application! Please enjoy our application and try with your video!
+
+Here are some video examples you can try:
+1. Trump vs. Biden presidential debate
+    1. https://www.youtube.com/watch?v=MOsW3cj53FI
+    2. From 00:11 to 00:55
+2. Robert Downey Jr. & Tom Holland on Spider-Man: Homecoming
+    1. https://www.youtube.com/watch?v=2G-B5upjLjM
+    2. From 00:54 to 1:02
+3. Timothee Chalamet and Zendaya Buzzfeed Interview
+    1. https://www.youtube.com/watch?v=ISpsfZxhnbs
+    2. From 2:48 to 3:04
+4. Pewdie pie and Marzia
+    1. https://www.youtube.com/watch?v=78IfMhVFBLk
+    2. From 3:58 to 4:20
+5. Tom holland interview with Jimmy Fallon
+    1. https://www.youtube.com/watch?v=hP8dOUm2qgc
+    2. From 2:53 to 3:13
+6. Timothee Chalamet and Zendaya Glamour Interview
+    1. https://youtu.be/V7g2HSy3Pss
+    2. From 4:35 to 4:45
