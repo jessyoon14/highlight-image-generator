@@ -2,13 +2,13 @@
 
 Note: our system is tested on the Ubuntu 18.04 LTS, and hardware spec: intel i5-10400F, GTX1650 
 
-To use our application, you should 3 GitHub repository in a same directory.
+To use our application, you should clone 3 GitHub repository in a same directory.
 
 1. [VisualVoice](https://github.com/facebookresearch/VisualVoice) (Speech separation model)
 2. [Highlight image generator](https://github.com/jessyoon14/highlight-image-generator) (Back-end)
 3. [Highlight image generator web](https://github.com/navy3690/highlight-image-generator-web) (Front-end)
 
-To perform this, please type below command on the shell. In below example, we set root directory as '*~/highlight'.*
+To perform this, please type below command on the shell. In below example, we set root directory as '*~/highlight'* in this example command.
 
 We set our environment by using conda with python version 3.8.12. If you want make same virtual environment, type below:
 
@@ -17,7 +17,7 @@ conda create --name test python=3.8.12
 conda activate test
 ```
 
- After cloning the repositories and install requirement with below command:
+ After, clone the repositories and install requirement with below command:
 
 ```bash
 mkdir -p ~/highlight && cd ~/highlight
@@ -36,7 +36,7 @@ conda activate test
 nvm install v13.6.0
 ```
 
-Below command is needed to resolve codec problem of the ffmpeg. If below command doesn’t work well, please refer [ffmpeg official installation guide](https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu).
+Below command are needed to resolve codec problem of the ffmpeg. If below command doesn’t work well, please refer [ffmpeg official installation guide](https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu).
 
 ```cpp
 sudo apt-get update -qq && sudo apt-get -y install \
@@ -103,3 +103,5 @@ Please turn on the front-end in another shell.
 cd ~/highlight/highlight-image-generator-web
 npm run serve
 ```
+
+Now you can access our application! Please enjoy our application and try with your video!
