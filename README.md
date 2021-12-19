@@ -40,38 +40,6 @@ npm install --global yarn
 yarn install
 ```
 
-Below command are needed to resolve codec problem of the ffmpeg. If below command doesn’t work well, please refer [ffmpeg official installation guide](https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu).
-
-```cpp
-sudo apt-get update -qq && sudo apt-get -y install \
-  autoconf \
-  automake \
-  build-essential \
-  cmake \
-  git-core \
-  libass-dev \
-  libfreetype6-dev \
-  libgnutls28-dev \
-  libmp3lame-dev \
-  libsdl2-dev \
-  libtool \
-  libva-dev \
-  libvdpau-dev \
-  libvorbis-dev \
-  libxcb1-dev \
-  libxcb-shm0-dev \
-  libxcb-xfixes0-dev \
-  meson \
-  ninja-build \
-  pkg-config \
-  texinfo \
-  wget \
-  yasm \
-  zlib1g-dev
-
-sudo apt-get install libx264-dev
-```
-
 And, download pre-trained model.
 
 ```bash
@@ -126,3 +94,38 @@ Here are some video examples you can try:
 6. Timothee Chalamet and Zendaya Glamour Interview
     1. https://youtu.be/V7g2HSy3Pss
     2. From 4:35 to 4:45
+
+
+### Troubleshooting
+
+We tested all the above videos and the model successfuly generated the result images. But please note that the FFMPEG library may be difficult for initialize depending on the environment, due to unsupoorted codecs. If then please refer [ffmpeg official installation guide](https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu).
+
+```cpp
+sudo apt-get update -qq && sudo apt-get -y install \
+  autoconf \
+  automake \
+  build-essential \
+  cmake \
+  git-core \
+  libass-dev \
+  libfreetype6-dev \
+  libgnutls28-dev \
+  libmp3lame-dev \
+  libsdl2-dev \
+  libtool \
+  libva-dev \
+  libvdpau-dev \
+  libvorbis-dev \
+  libxcb1-dev \
+  libxcb-shm0-dev \
+  libxcb-xfixes0-dev \
+  meson \
+  ninja-build \
+  pkg-config \
+  texinfo \
+  wget \
+  yasm \
+  zlib1g-dev
+
+sudo apt-get install libx264-dev
+```
